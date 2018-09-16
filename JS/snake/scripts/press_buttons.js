@@ -1,40 +1,56 @@
-var newNav = "right";
-
+/**
+ * Реагирует на нажатие клавиш и при необходимости меняет направление.
+ * Направление не меняется на противоположное текущему движению змейки.
+ * @param event
+ */
 document.onkeydown = function pressButton(event) {
+    var nav;
     switch (event.key) {
-        case "ArrowUp": {
-                nav = "up";
+        case BUTTON_UP: {
+            nav = UP;
         }
             break;
-        case "ArrowDown": {
-                nav = "down";
+        case BUTTON_DOWN: {
+            nav = DOWN;
         }
             break;
-        case "ArrowLeft": {
-                nav = "left";
+        case BUTTON_LEFT: {
+            nav = LEFT;
         }
             break;
-        case "ArrowRight": {
-                nav = "right";
+        case BUTTON_RIGHT: {
+            nav = RIGHT;
         }
             break;
-    }
+        default: {
+            nav = newNav;
+        }
 
+    }
+    checkNavigation(nav);
+}
+
+/**
+ *  Проверяет новое напрвление с текущим направлением(они не должны быть противоположными).
+ *  Если они не противоположны, то обновиться newNav, отвечающая за направление при следующем шаге.
+ * @param nav
+ */
+function checkNavigation(nav) {
     switch (navigation) {
-        case "up": {
-            if (nav!="down") newNav=nav;
+        case UP: {
+            if (nav != DOWN) newNav = nav;
         }
             break;
-        case "down": {
-            if (nav!="up") newNav=nav;
+        case DOWN: {
+            if (nav != UP) newNav = nav;
         }
             break;
-        case "left": {
-            if (nav!="right") newNav=nav;
+        case LEFT: {
+            if (nav != RIGHT) newNav = nav;
         }
             break;
-        case "right": {
-            if (nav!="left") newNav=nav;
+        case RIGHT: {
+            if (nav != LEFT) newNav = nav;
         }
             break;
     }

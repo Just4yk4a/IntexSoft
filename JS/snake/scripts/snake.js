@@ -1,76 +1,104 @@
-function move(snakeCoordinate) {
-    var node = snakeCoordinate.head;
-    row = node.row;
-    col = node.column;
-    switch (navigation) {
-        case "up": {
-            newRow = "row" + (Number.parseInt(row.substring(3)) - 1);
-            newCol = "col" + (Number.parseInt(col.substring(3)));
-        }
-            break;
-        case "down": {
-            newRow = "row" + (Number.parseInt(row.substring(3)) + 1);
-            newCol = "col" + (Number.parseInt(col.substring(3)));
-        }
-            break;
-        case "right": {
-            newRow = "row" + (Number.parseInt(row.substring(3)));
-            newCol = "col" + (Number.parseInt(col.substring(3)) + 1);
-        }
-            break;
-        case "left": {
-            newRow = "row" + (Number.parseInt(row.substring(3)));
-            newCol = "col" + (Number.parseInt(col.substring(3)) - 1);
-        }
-            break;
-    }
-    snakeCoordinate.addToHead(newRow, newCol);
-    if (check(snakeCoordinate) && headIsApple(snakeCoordinate)) {
+/**
+ * Один шаг змеи:
+ * Создается новая точка головы змеи
+ * Создается новое яблоко, если координаты головы совпадают с координатами яблока
+ * @param snake
+ */
+function move(snake) {
+    var newPoint;
+    newPoint = newSnakeElement(snake.head.point);
+    snake.addToHead(newPoint);
+    manipulationWithApple(snake);
+}
+
+/**
+ * Создается новое яблоко, если координаты головы совпадают с координатами яблока
+ * Удаляет последний элемент в списке, если координаты хвоста совпали с яблоком
+ * @param snake
+ */
+function manipulationWithApple(snake) {
+    if (isPointInTable(snake.head.point) && IsApple(snake.head.point)) {
         generateApple();
     }
-    if (!tailIsApple(snakeCoordinate)) {
-        snakeCoordinate.deleteLast();
+    if (IsApple(snake.tail.point)) {
+        eatApple(snake.tail.point);
+    }
+    else {
+        snake.deleteLast();
     }
 }
 
-
-function check(snakeCoordinate) {
-    number = Number.parseInt(snakeCoordinate.head.row.substring(3));
-    if (number < 0 || number > 9) {
-        return false;
+/**
+ * Создает новый элемент змеи возле головы, в зависимости от направления движения.
+ * @param point точка нахождения головы.
+ * @returns {*}
+ */
+function newSnakeElement(point) {
+    var rowIndex = point.rowIndex;
+    var cellIndex = point.cellIndex;
+    switch (navigation) {
+        case UP: {
+            return new Point(rowIndex - 1, cellIndex);
+        }
+            break;
+        case DOWN: {
+            return new Point(rowIndex + 1, cellIndex);
+        }
+            break;
+        case RIGHT: {
+            return new Point(rowIndex, cellIndex + 1);
+        }
+            break;
+        case LEFT: {
+            return new Point(rowIndex, cellIndex - 1);
+        }
+            break;
     }
-    number = Number.parseInt(snakeCoordinate.head.column.substring(3));
-    if (number < 0 || number > 9) {
-        return false;
-    }
-    if (snakeCoordinate.haveElement(snakeCoordinate.head)) {
-        return false;
-    }
-    return true;
 }
 
-function headIsApple(snake) {
-    var parent = document.getElementsByClassName(snake.head.row);
-    var div = parent[0].getElementsByClassName(snake.head.column);
-    if (div[0].classList.contains("apple")) {
-        return true;
-    }
-    return false;
+/**
+ * Проверяет число на нраницу от 0 до max.
+ * @param number число
+ * @param max верхняя граница
+ * @returns {boolean}
+ */
+function isInBound(number, max) {
+    return number >= 0 && number < max;
 }
 
-function tailIsApple(snake) {
-    var parent = document.getElementsByClassName(snake.tail.row);
-    var div = parent[0].getElementsByClassName(snake.tail.column);
-    if (div[0].classList.contains("apple")) {
-        div[0].classList.remove("apple");
-        return true;
-    }
-    return false;
+/**
+ * Проверяет точку на нахождение в пределах таблицы
+ * @param point
+ * @returns {*}
+ */
+function isPointInTable(point) {
+    return isInBound(point.rowIndex, MAX_ROW) && isInBound(point.cellIndex, MAX_CELL);
 }
 
-function eatApple(snake) {
-    var parent = document.getElementsByClassName(snake.tail.row);
-    var div = parent[0].getElementsByClassName(snake.tail.column);
-    div[0].classList.remove("apple");
-    alert(div[0].classList.contains("applle"));
+/**
+ * Проверяет, чтобы голова змеи не вышла за границы и не попала на саму себя.
+ * @param snakeCoordinate список координат змеи
+ * @returns {boolean}
+ */
+function isGameOver(snakeCoordinate) {
+    return snakeCoordinate.haveHeadElement() || !isPointInTable(snakeCoordinate.head.point);
+}
+
+/**
+ * Проверяет находятся ли яблоко и хвост в одной ячейке
+ * @param snake
+ * @returns {boolean}
+ */
+function IsApple(point) {
+    var cell = getCell(point);
+    return cell.classList.contains(CLASS_APPLE);
+}
+
+/**
+ * Удаляет из списка классов у ячейки пометку "apple"
+ * @param snake ячейка
+ */
+function eatApple(point) {
+    var cell = getCell(point);
+    cell.classList.remove(CLASS_APPLE);
 }

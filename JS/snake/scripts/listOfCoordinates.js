@@ -1,20 +1,32 @@
-function Node(row, column) {
-    this.row = row;
-    this.column = column;
+/**
+ * Хранит точку и адресса на следующий и предыдущий элементы
+ * @param point
+ * @constructor
+ */
+function Node(point) {
+    this.point = point;
     this.next = null;
     this.previous = null;
 }
 
+/**
+ * Хранит длину списка, а также его первый и последний элемент.
+ * @constructor
+ */
 function DoublyList() {
-    this._length = 0;
+    this.length = 0;
     this.head = null;
     this.tail = null;
 }
 
-DoublyList.prototype.addToHead = function (row, column) {
-    var node = new Node(row, column);
+/**
+ * Добавляет новый элемент в начало списка
+ * @param point
+ */
+DoublyList.prototype.addToHead = function (point) {
+    var node = new Node(point);
 
-    if (this._length == 0) {
+    if (this.length == 0) {
         this.head = node;
         this.tail = node;
     }
@@ -25,34 +37,43 @@ DoublyList.prototype.addToHead = function (row, column) {
         tempNode.next = this.head;
     }
 
-    this._length++;
+    this.length++;
 }
 
+/**
+ * Закрашивает в таблице точки хранящиеся в списке
+ */
 DoublyList.prototype.drawElements = function () {
     var node = this.head;
-    for (index = 0; index < this._length; index++) {
-        var parent = document.getElementsByClassName(node.row);
-        var div = parent[0].getElementsByClassName(node.column);
-        div[0].classList.remove("noactive");
-        div[0].classList.add("active");
+    for (index = 0; index < this.length; index++) {
+        var cell = getCell(node.point);
+        cell.classList.remove(CLASS_FREE_CELL);
+        cell.classList.add(CLASS_SNAKE);
         node = node.previous;
     }
 }
 
+/**
+ * Удаляет последний элемент из списка
+ */
 DoublyList.prototype.deleteLast = function () {
-    var parent = document.getElementsByClassName(this.tail.row);
-    var div = parent[0].getElementsByClassName(this.tail.column);
-    div[0].classList.remove("active");
-    div[0].classList.add("noactive");
+    var cell = getCell(this.tail.point);
+    cell.classList.remove(CLASS_SNAKE);
+    cell.classList.add(CLASS_FREE_CELL);
     this.tail = this.tail.next;
     this.tail.previous = null;
-    this._length--;
+    this.length--;
 }
 
-DoublyList.prototype.haveElement = function (element) {
+/**
+ * Проверяет повторяется ли точка головы
+ * @param point
+ * @returns {boolean}
+ */
+DoublyList.prototype.haveHeadElement = function () {
     var node = this.head.previous;
-    for (var index=0; index<this._length-1; index++){
-        if(node.row == element.row && node.column == element.column){
+    for (var index = 0; index < this.length - 1; index++) {
+        if (node.point.equals(this.head.point)) {
             return true;
         }
         node = node.previous;

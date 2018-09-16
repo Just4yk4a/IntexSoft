@@ -1,6 +1,10 @@
+/**
+ * Задает первоначальные координаты змейки
+ * @param snake
+ */
 function createSnake(snake) {
-    snake.addToHead("row4", "col0");
-    snake.addToHead("row4", "col1");
-    snake.addToHead("row4", "col2");
-    snake.drawElements();
+    for (var index = 0; index < 3; index++) {
+        var point = new Point(0, index);
+        snake.addToHead(point);
+    }
 }
