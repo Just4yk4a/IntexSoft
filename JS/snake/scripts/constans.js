@@ -1,7 +1,7 @@
 //Параметры игры
 window.MAX_ROW = 15;
 window.MAX_CELL = 15;
-window.timeInterval = 300;
+window.timeInterval = 100;
 //Названия классов
 window.CLASS_ROW = "row";
 window.CLASS_CELL = "cell";

@@ -70,7 +70,7 @@ DoublyList.prototype.deleteLast = function () {
  * @param point
  * @returns {boolean}
  */
-DoublyList.prototype.haveHeadElement = function () {
+DoublyList.prototype.isHaveHeadElement = function () {
     var node = this.head.previous;
     for (var index = 0; index < this.length - 1; index++) {
         if (node.point.equals(this.head.point)) {

@@ -22,6 +22,6 @@ function movement(snakeCoordinate) {
             alert("Game Over!");
             clearInterval(intervalID);
         }
-        snakeCoordinate.drawElements();
+        else snakeCoordinate.drawElements();
     }, timeInterval);
 }

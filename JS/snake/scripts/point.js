@@ -49,7 +49,7 @@ function findFreePoint() {
  * @returns {boolean} возвращает true, если точки эквовалентны, или false в противном случаи
  */
 Point.prototype.equals = function (point) {
-    if (this.rowIndex == point.rowIndex && this.cellIndex == point.cellIndex) {
+    if (this.rowIndex === point.rowIndex && this.cellIndex === point.cellIndex) {
         return true;
     }
     return false;

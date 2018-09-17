@@ -38,15 +38,15 @@ document.onkeydown = function pressButton(event) {
 function checkNavigation(nav) {
     switch (navigation) {
         case UP: {
-            if (nav != DOWN) newNav = nav;
+            if (nav !== DOWN) newNav = nav;
         }
             break;
         case DOWN: {
-            if (nav != UP) newNav = nav;
+            if (nav !== UP) newNav = nav;
         }
             break;
         case LEFT: {
-            if (nav != RIGHT) newNav = nav;
+            if (nav !== RIGHT) newNav = nav;
         }
             break;
         case RIGHT: {

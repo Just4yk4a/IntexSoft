@@ -81,7 +81,7 @@ function isPointInTable(point) {
  * @returns {boolean}
  */
 function isGameOver(snakeCoordinate) {
-    return snakeCoordinate.haveHeadElement() || !isPointInTable(snakeCoordinate.head.point);
+    return snakeCoordinate.isHaveHeadElement() || !isPointInTable(snakeCoordinate.head.point);
 }
 
 /**
